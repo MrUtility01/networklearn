@@ -10,6 +10,22 @@ import {
 
 const STORAGE_KEY = 'networklearn_stats_v1';
 
+const KNOWN_CMDS = [
+  'help', 'help windows', 'help network', 'clear', 'cls', 'whoami', 'hostname', 'ver', 'winver',
+  'systeminfo', 'lab-info', 'ipconfig', 'ipconfig /all', 'ipconfig /release', 'ipconfig /renew',
+  'ipconfig /flushdns', 'ipconfig /displaydns', 'getmac', 'getmac /v',
+  'netsh interface show interface', 'netsh interface ip show config', 'netsh wlan show profiles',
+  'netsh advfirewall show allprofiles', 'netsh interface ipv4 show route',
+  'ping', 'tracert', 'pathping', 'nslookup', 'arp -a', 'route print', 'netstat -an', 'netstat -ano',
+  'net view', 'net share', 'net user', 'net localgroup', 'net start',
+  'nbtstat -n', 'nbtstat -c', 'Get-NetAdapter', 'Get-NetIPAddress', 'Get-NetIPConfiguration',
+  'Get-NetRoute', 'Get-NetNeighbor', 'Get-NetTCPConnection', 'Get-NetFirewallRule',
+  'Get-DnsClientServerAddress', 'Resolve-DnsName', 'Test-NetConnection', 'tnc',
+  'Get-Service', 'Get-Process', 'tasklist', 'sc query', 'gpresult /r', 'gpupdate /force',
+  'osi', 'packet-journey', 'subnet', 'private-ranges', 'ports', 'vlan', 'nat', 'acl', 'stp',
+  'vpn', 'firewall', 'wifi', 'dig', 'dhcp-dora', 'security-zones', 'about-network',
+];
+
 function loadStats(): UserStats {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -35,7 +51,12 @@ export default function App() {
   const [view, setView] = useState<'landing' | 'lab'>('landing');
   const [stats, setStats] = useState<UserStats>(loadStats);
   const [history, setHistory] = useState<TerminalHistoryItem[]>([
-    { id: '0', type: 'system', text: '🌐 NetworkLearn Lab v1.0 — برای شروع «help» را تایپ کنید', timestamp: Date.now() },
+    {
+      id: '0',
+      type: 'system',
+      text: 'Microsoft Windows [Version 10.0.26100] — NetworkLearn Lab\n(c) NetworkLearn. Type "help" or "help windows" for 200+ commands.',
+      timestamp: Date.now(),
+    },
   ]);
   const [input, setInput] = useState('');
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
@@ -97,9 +118,10 @@ export default function App() {
     updated.objectives = activeQuest.objectives.map((obj) => {
       if (obj.completed) return obj;
       if (obj.checkType === 'command_run' && obj.expectedCommand) {
-        const re = typeof obj.expectedCommand === 'string'
-          ? new RegExp(obj.expectedCommand, 'i')
-          : obj.expectedCommand;
+        const re =
+          typeof obj.expectedCommand === 'string'
+            ? new RegExp(obj.expectedCommand, 'i')
+            : obj.expectedCommand;
         if (re.test(command)) {
           changed = true;
           return { ...obj, completed: true };
@@ -109,8 +131,7 @@ export default function App() {
     });
     if (changed) {
       setActiveQuest(updated);
-      const allDone = updated.objectives.every((o) => o.completed);
-      if (allDone) completeQuest(updated);
+      if (updated.objectives.every((o) => o.completed)) completeQuest(updated);
     }
   }, [activeQuest, completeQuest]);
 
@@ -124,7 +145,6 @@ export default function App() {
     setCmdHistory((h) => [cmd, ...h].slice(0, 50));
     setHistIdx(-1);
     setInput('');
-
     setStats((s) => ({ ...s, commandsRunCount: s.commandsRunCount + 1 }));
 
     const result = runCommand(cmd);
@@ -134,7 +154,6 @@ export default function App() {
       addLine(result.isError ? 'error' : 'output', result.output);
       if (result.isError) playError();
     }
-
     checkObjectives(cmd);
   };
 
@@ -156,14 +175,12 @@ export default function App() {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      // simple autocomplete from known commands
-      const known = ['help', 'clear', 'osi', 'ping', 'arp', 'dig', 'subnet', 'traceroute', 'ip', 'about-network', 'packet-journey'];
-      const match = known.find((c) => c.startsWith(input.toLowerCase()));
+      const q = input.toLowerCase();
+      const match = KNOWN_CMDS.find((c) => c.toLowerCase().startsWith(q));
       if (match) setInput(match);
     }
   };
 
-  // ─── Landing ───────────────────────────────────────────────
   if (view === 'landing') {
     return (
       <div className="min-h-screen bg-[#070a10] text-zinc-100 flex flex-col">
@@ -183,15 +200,15 @@ export default function App() {
         <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 text-sm mb-6">
             <Sparkles className="w-4 h-4" />
-            نسخه بازی‌محور NetworkEncyclopedia
+            تمرکز ویژه روی دستورات شبکه ویندوز
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
             شبکه را <span className="text-sky-400">با انجام دادن</span> یاد بگیر
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mb-10">
-            ترمینال تعاملی · کوئست‌های مرحله‌ای · سیستم XP و نشان · دستیار هوش مصنوعی
+            ترمینال شبیه CMD/PowerShell · بیش از ۲۰۰ دستور · کوئست · XP و نشان
             <br />
-            بدون نیاز به تجهیزات واقعی یا شبیه‌ساز سنگین
+            ipconfig · netsh · route · netstat · Get-NetAdapter و ...
           </p>
           <button
             onClick={() => setView('lab')}
@@ -203,8 +220,8 @@ export default function App() {
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl w-full">
             {[
-              { icon: '📡', label: '۶+ فصل', sub: 'مبانی تا امنیت' },
-              { icon: '⌨️', label: '۲۰+ دستور', sub: 'شبیه‌سازی‌شده' },
+              { icon: '🪟', label: 'ویندوز اول', sub: 'ipconfig / netsh / PS' },
+              { icon: '⌨️', label: '۲۰۰+ دستور', sub: 'شبیه‌سازی‌شده' },
               { icon: '🎯', label: 'کوئست تعاملی', sub: 'با هدف مشخص' },
               { icon: '🏆', label: 'گیم‌فیکیشن', sub: 'XP و نشان' },
             ].map((item) => (
@@ -224,13 +241,11 @@ export default function App() {
     );
   }
 
-  // ─── Lab ───────────────────────────────────────────────────
   const xpNeeded = xpForNextLevel(stats.level);
   const xpPct = Math.min(100, (stats.xp / xpNeeded) * 100);
 
   return (
     <div className="h-screen flex flex-col bg-[#070a10] text-zinc-100 overflow-hidden">
-      {/* Top bar */}
       <header className="shrink-0 h-12 border-b border-zinc-800 flex items-center px-4 gap-4 bg-[#0b0f17]">
         <button onClick={() => setView('landing')} className="flex items-center gap-2 text-sky-400 hover:text-sky-300">
           <Network className="w-5 h-5" />
@@ -265,14 +280,13 @@ export default function App() {
       </header>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Terminal */}
         <div className="flex-1 flex flex-col min-w-0" onClick={() => inputRef.current?.focus()}>
           <div className="flex-1 overflow-y-auto terminal-scroll p-4 font-mono text-sm leading-relaxed">
             {history.map((item) => (
               <div key={item.id} className="mb-1.5">
                 {item.type === 'input' && (
                   <div className="flex gap-2">
-                    <span className="text-sky-400 shrink-0">lab@netlearn:~$</span>
+                    <span className="text-sky-400 shrink-0">C:\\Users\\Student></span>
                     <span className="text-zinc-100">{item.text}</span>
                   </div>
                 )}
@@ -282,26 +296,22 @@ export default function App() {
                 {item.type === 'error' && (
                   <pre className="text-red-400 whitespace-pre-wrap font-mono">{item.text}</pre>
                 )}
-                {item.type === 'system' && (
-                  <div className="text-sky-500/80">{item.text}</div>
-                )}
-                {item.type === 'success' && (
-                  <div className="text-emerald-400 font-medium">{item.text}</div>
-                )}
+                {item.type === 'system' && <div className="text-sky-500/80 whitespace-pre-wrap">{item.text}</div>}
+                {item.type === 'success' && <div className="text-emerald-400 font-medium">{item.text}</div>}
               </div>
             ))}
             <div ref={bottomRef} />
           </div>
 
           <form onSubmit={handleSubmit} className="shrink-0 border-t border-zinc-800 p-3 flex items-center gap-2 bg-[#0b0f17]">
-            <span className="text-sky-400 font-mono text-sm shrink-0">lab@netlearn:~$</span>
+            <span className="text-sky-400 font-mono text-sm shrink-0">C:\\Users\\Student></span>
             <input
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               className="flex-1 bg-transparent outline-none font-mono text-sm text-zinc-100 placeholder:text-zinc-600"
-              placeholder="دستور را بنویسید... (help)"
+              placeholder="ipconfig /all   |   help windows   |   Tab = autocomplete"
               autoFocus
               spellCheck={false}
               autoComplete="off"
@@ -309,7 +319,6 @@ export default function App() {
           </form>
         </div>
 
-        {/* Sidebar */}
         {sidebarOpen && (
           <aside className="w-80 shrink-0 border-r border-zinc-800 bg-[#0b0f17] flex flex-col overflow-hidden">
             <div className="p-3 border-b border-zinc-800 flex items-center gap-2">
@@ -321,7 +330,10 @@ export default function App() {
               {CHAPTERS.map((ch) => (
                 <div key={ch.id}>
                   <button
-                    onClick={() => { setActiveChapter(ch); setActiveQuest(null); }}
+                    onClick={() => {
+                      setActiveChapter(ch);
+                      setActiveQuest(null);
+                    }}
                     className={`w-full text-right px-3 py-2 rounded-lg text-sm flex items-center gap-2 transition ${
                       activeChapter.id === ch.id ? 'bg-sky-600/20 text-sky-300' : 'hover:bg-zinc-800/60 text-zinc-400'
                     }`}
@@ -360,13 +372,13 @@ export default function App() {
               ))}
             </div>
 
-            {/* Active quest panel */}
             {activeQuest && (
               <div className="border-t border-zinc-800 p-3 space-y-2 max-h-64 overflow-y-auto">
                 <div className="font-semibold text-sm text-sky-300">{activeQuest.title}</div>
                 <p className="text-xs text-zinc-400 leading-relaxed">{activeQuest.description}</p>
                 <div className="text-xs text-zinc-500">
-                  <span className="text-zinc-400">هدف: </span>{activeQuest.targetInstruction}
+                  <span className="text-zinc-400">هدف: </span>
+                  {activeQuest.targetInstruction}
                 </div>
                 <div className="space-y-1">
                   {activeQuest.objectives.map((o) => (
@@ -376,7 +388,9 @@ export default function App() {
                       ) : (
                         <Circle className="w-3.5 h-3.5 text-zinc-600 shrink-0 mt-0.5" />
                       )}
-                      <span className={o.completed ? 'text-emerald-400/80 line-through' : 'text-zinc-400'}>{o.text}</span>
+                      <span className={o.completed ? 'text-emerald-400/80 line-through' : 'text-zinc-400'}>
+                        {o.text}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -392,10 +406,12 @@ export default function App() {
         )}
       </div>
 
-      {/* Badges modal */}
       {showBadges && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setShowBadges(false)}>
-          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-amber-400" />
