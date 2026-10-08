@@ -2,77 +2,45 @@
 
 # 🌐 NetworkLearn | نتورک‌لرن
 
-### پلتفرم بازی‌محور و شبیه‌ساز تعاملی یادگیری شبکه — با تمرکز قوی روی **ویندوز**
+### پلتفرم بازی‌محور یادگیری شبکه — **ویندوز · لینوکس · PowerShell**
 
-![NetworkLearn](https://img.shields.io/badge/NetworkLearn-v1.2-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)
-![Commands](https://img.shields.io/badge/Commands-405-22c55e?style=for-the-badge)
-![React 19](https://img.shields.io/badge/React-19.0-61dafb?style=for-the-badge&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
+![NetworkLearn](https://img.shields.io/badge/NetworkLearn-v1.3-0ea5e9?style=for-the-badge)
+![Commands](https://img.shields.io/badge/Commands-530%2B-22c55e?style=for-the-badge)
+![Windows](https://img.shields.io/badge/Windows-CMD%20%7C%20PowerShell-0078d4?style=for-the-badge&logo=windows)
+![Linux](https://img.shields.io/badge/Linux-ip%20ss%20nmcli-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
 
 <p align="center">
-  <b>ترمینال شبیه CMD/PowerShell · ۴۰۵ دستور شبکه · کوئست · XP · نشان</b>
+  <b>ترمینال تعاملی · ۵۳۰+ دستور · کوئست · XP · نشان</b>
 </p>
 
 </div>
 
 ---
 
-## 📖 درباره پروژه
+## 📖 درباره
 
-**NetworkLearn** نسخه بازی‌محور [NetworkEncyclopedia](https://github.com/MrUtility01/NetworkEncyclopedia) است.  
-در مرورگر یک **لاب ویندوزی** دارید با خروجی‌های واقعی‌مانند برای دستورات شبکه ویندوز — بدون VM و بدون تجهیزات.
+نسخه بازی‌محور [NetworkEncyclopedia](https://github.com/MrUtility01/NetworkEncyclopedia) با شبیه‌ساز ترمینال برای:
+
+| حوزه | محتوا |
+|------|--------|
+| **ویندوز CMD** | ipconfig · netsh · ping · tracert · netstat · arp · route · net |
+| **PowerShell** | Get-NetAdapter · Get-NetIP* · Get-NetRoute · Test-NetConnection · Get-NetFirewall* · SMB |
+| **لینوکس** | ip · ss · dig · nmcli · tcpdump · iptables/ufw · traceroute · mtr · resolvectl |
+| **آموزشی** | OSI · subnet · VLAN · NAT · STP · DNS/DHCP · امنیت |
 
 ---
 
-## 🪟 دستورات ویندوز (اولویت اصلی) — ۴۰۵ دستور
-
-| دسته | نمونه دستورات |
-|------|----------------|
-| **IP و آداپتر** | `ipconfig` · `/all` · `/release` · `/renew` · `/flushdns` · `getmac` |
-| **netsh** | `interface show` · `ip show config` · `wlan show profiles` · `advfirewall` · `show route` |
-| **عیب‌یابی** | `ping` · `tracert` · `pathping` · `nslookup` · `Test-NetConnection` · `tnc` |
-| **ARP / Route / Netstat** | `arp -a` · `route print` · `netstat -an` · `-ano` · `-s` · `-e` |
-| **net** | `net view` · `share` · `user` · `localgroup` · `start` · `config` · `session` |
-| **DNS** | `Resolve-DnsName` · `Get-DnsClient*` · `Clear-DnsClientCache` · `nbtstat` |
-| **PowerShell Net** | `Get-NetAdapter` · `Get-NetIPAddress` · `Get-NetRoute` · `Get-NetNeighbor` · `Get-NetTCPConnection` · `Get-NetFirewallRule` · `Get-SmbShare` |
-| **سرویس** | `sc query` · `Get-Service` · `tasklist` · `net start` |
-| **دامنه / GPO** | `gpresult` · `gpupdate` · `nltest` · `whoami` · `systeminfo` |
-| **آموزشی** | `osi` · `subnet` · `tcp-handshake` · `dhcp-dora` · `vlan` · `nat` · `stp` |
-
-در ترمینال بزنید:
+## ⌨️ راهنما در ترمینال
 
 ```text
-help windows
-help network
 help
+help windows
+help linux
+help powershell
+help network
 lab-info
 ```
-
----
-
-## ✨ سایر قابلیت‌ها
-
-- **کوئست‌های مرحله‌ای** بر اساس سرفصل NetworkEncyclopedia (OSI، سوییچینگ، IP، پروتکل، DNS/DHCP، امنیت)
-- **گیم‌فیکیشن:** XP، سطح، نشان — ذخیره در `localStorage`
-- **TAB autocomplete** برای دستورات رایج ویندوز
-- **پرامپت ویندوزی:** `C:\Users\Student>`
-- **AI Mentor** (اختیاری با `GEMINI_API_KEY`)
-- RTL فارسی + فونت وزیرمتن
-- **منبع واحد دستورات:** `src/lib/commandCatalog.ts` (۴۰۵ دستور) → مصرف‌شده در `commands.ts`
-
----
-
-## 🗺️ سرفصل کوئست‌ها
-
-| سطح | عنوان |
-|:---:|:---|
-| ۱ | مبانی شبکه و مدل OSI |
-| ۲ | اترنت و سوییچینگ |
-| ۳ | IPv4 / IPv6 و ساب‌نتینگ |
-| ۴ | ARP · ICMP · TCP · UDP |
-| ۵ | DNS و DHCP |
-| ۶ | امنیت شبکه پایه |
 
 ---
 
@@ -86,26 +54,19 @@ cp .env.example .env
 npm run dev
 ```
 
-باز کردن: [http://localhost:3000](http://localhost:3000)
-
-| اسکریپت | کار |
-|---------|-----|
-| `npm run dev` | توسعه |
-| `npm run build` | بیلد |
-| `npm run start` | اجرای بیلد |
+[http://localhost:3000](http://localhost:3000)
 
 ---
 
 ## 📂 ساختار
 
 ```text
-src/
-  App.tsx                  # لندینگ + لاب + ترمینال
-  lib/commandCatalog.ts    # کاتالوگ ۴۰۵ دستور (منبع واحد)
-  lib/commands.ts          # موتور اجرا — import از catalog
-  lib/quests.ts            # فصل‌ها و کوئست‌ها
-  lib/sound.ts
-server.ts                  # Express + Vite + Gemini API
+src/lib/
+  commandCatalog.ts    # ادغام A+B
+  commandCatalogA.ts   # ویندوز + شروع لینوکس
+  commandCatalogB.ts   # لینوکس کامل + PowerShell
+  commands.ts          # موتور اجرا
+  quests.ts
 ```
 
 ---
@@ -113,7 +74,3 @@ server.ts                  # Express + Vite + Gemini API
 ## 📄 لایسنس
 
 MIT
-
-<div align="center">
-  <sub>ساخته‌شده برای یادگیری عملی شبکه روی ویندوز</sub>
-</div>
