@@ -4,14 +4,14 @@
 
 ### پلتفرم بازی‌محور و شبیه‌ساز تعاملی یادگیری شبکه — با تمرکز قوی روی **ویندوز**
 
-![NetworkLearn](https://img.shields.io/badge/NetworkLearn-v1.1-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)
-![Commands](https://img.shields.io/badge/Commands-200%2B-22c55e?style=for-the-badge)
+![NetworkLearn](https://img.shields.io/badge/NetworkLearn-v1.2-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)
+![Commands](https://img.shields.io/badge/Commands-405-22c55e?style=for-the-badge)
 ![React 19](https://img.shields.io/badge/React-19.0-61dafb?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
 
 <p align="center">
-  <b>ترمینال شبیه CMD/PowerShell · بیش از ۲۰۰ دستور شبکه · کوئست · XP · نشان</b>
+  <b>ترمینال شبیه CMD/PowerShell · ۴۰۵ دستور شبکه · کوئست · XP · نشان</b>
 </p>
 
 </div>
@@ -25,11 +25,11 @@
 
 ---
 
-## 🪟 دستورات ویندوز (اولویت اصلی)
+## 🪟 دستورات ویندوز (اولویت اصلی) — ۴۰۵ دستور
 
 | دسته | نمونه دستورات |
 |------|----------------|
-| **IP و آداپتر** | `ipconfig` · `ipconfig /all` · `/release` · `/renew` · `/flushdns` · `getmac` |
+| **IP و آداپتر** | `ipconfig` · `/all` · `/release` · `/renew` · `/flushdns` · `getmac` |
 | **netsh** | `interface show` · `ip show config` · `wlan show profiles` · `advfirewall` · `show route` |
 | **عیب‌یابی** | `ping` · `tracert` · `pathping` · `nslookup` · `Test-NetConnection` · `tnc` |
 | **ARP / Route / Netstat** | `arp -a` · `route print` · `netstat -an` · `-ano` · `-s` · `-e` |
@@ -38,6 +38,7 @@
 | **PowerShell Net** | `Get-NetAdapter` · `Get-NetIPAddress` · `Get-NetRoute` · `Get-NetNeighbor` · `Get-NetTCPConnection` · `Get-NetFirewallRule` · `Get-SmbShare` |
 | **سرویس** | `sc query` · `Get-Service` · `tasklist` · `net start` |
 | **دامنه / GPO** | `gpresult` · `gpupdate` · `nltest` · `whoami` · `systeminfo` |
+| **آموزشی** | `osi` · `subnet` · `tcp-handshake` · `dhcp-dora` · `vlan` · `nat` · `stp` |
 
 در ترمینال بزنید:
 
@@ -45,6 +46,7 @@
 help windows
 help network
 help
+lab-info
 ```
 
 ---
@@ -57,6 +59,7 @@ help
 - **پرامپت ویندوزی:** `C:\Users\Student>`
 - **AI Mentor** (اختیاری با `GEMINI_API_KEY`)
 - RTL فارسی + فونت وزیرمتن
+- **منبع واحد دستورات:** `src/lib/commandCatalog.ts` (۴۰۵ دستور) → مصرف‌شده در `commands.ts`
 
 ---
 
@@ -97,11 +100,12 @@ npm run dev
 
 ```text
 src/
-  App.tsx              # لندینگ + لاب + ترمینال
-  lib/commands.ts      # موتور ۲۰۰+ دستور (ویندوز-محور)
-  lib/quests.ts        # فصل‌ها و کوئست‌ها
+  App.tsx                  # لندینگ + لاب + ترمینال
+  lib/commandCatalog.ts    # کاتالوگ ۴۰۵ دستور (منبع واحد)
+  lib/commands.ts          # موتور اجرا — import از catalog
+  lib/quests.ts            # فصل‌ها و کوئست‌ها
   lib/sound.ts
-server.ts              # Express + Vite + Gemini API
+server.ts                  # Express + Vite + Gemini API
 ```
 
 ---
