@@ -9,9 +9,11 @@ import {
 } from 'lucide-react';
 
 const STORAGE_KEY = 'networklearn_stats_v1';
+const PROMPT = 'C:\\Users\\Student>';
 
 const KNOWN_CMDS = [
-  'help', 'help windows', 'help network', 'clear', 'cls', 'whoami', 'hostname', 'ver', 'winver',
+  'help', 'help windows', 'help linux', 'help powershell', 'help network', 'clear', 'cls',
+  'whoami', 'hostname', 'ver', 'winver',
   'systeminfo', 'lab-info', 'ipconfig', 'ipconfig /all', 'ipconfig /release', 'ipconfig /renew',
   'ipconfig /flushdns', 'ipconfig /displaydns', 'getmac', 'getmac /v',
   'netsh interface show interface', 'netsh interface ip show config', 'netsh wlan show profiles',
@@ -22,8 +24,9 @@ const KNOWN_CMDS = [
   'Get-NetRoute', 'Get-NetNeighbor', 'Get-NetTCPConnection', 'Get-NetFirewallRule',
   'Get-DnsClientServerAddress', 'Resolve-DnsName', 'Test-NetConnection', 'tnc',
   'Get-Service', 'Get-Process', 'tasklist', 'sc query', 'gpresult /r', 'gpupdate /force',
+  'ip addr', 'ip route', 'ss -tuln', 'nmcli device', 'ufw status', 'iptables -L', 'dig',
   'osi', 'packet-journey', 'subnet', 'private-ranges', 'ports', 'vlan', 'nat', 'acl', 'stp',
-  'vpn', 'firewall', 'wifi', 'dig', 'dhcp-dora', 'security-zones', 'about-network',
+  'vpn', 'firewall', 'wifi', 'dhcp-dora', 'security-zones', 'about-network',
 ];
 
 function loadStats(): UserStats {
@@ -54,7 +57,7 @@ export default function App() {
     {
       id: '0',
       type: 'system',
-      text: 'Microsoft Windows [Version 10.0.26100] — NetworkLearn Lab\n(c) NetworkLearn. Type "help" or "help windows" for 200+ commands.',
+      text: 'Microsoft Windows [Version 10.0.26100] — NetworkLearn Lab\n(c) NetworkLearn. Type "help" or "help windows" for commands.',
       timestamp: Date.now(),
     },
   ]);
@@ -200,15 +203,15 @@ export default function App() {
         <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 text-sm mb-6">
             <Sparkles className="w-4 h-4" />
-            تمرکز ویژه روی دستورات شبکه ویندوز
+            ویندوز · لینوکس · PowerShell
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
             شبکه را <span className="text-sky-400">با انجام دادن</span> یاد بگیر
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mb-10">
-            ترمینال شبیه CMD/PowerShell · بیش از ۲۰۰ دستور · کوئست · XP و نشان
+            ترمینال شبیه CMD/PowerShell/Linux · صدها دستور · کوئست · XP و نشان
             <br />
-            ipconfig · netsh · route · netstat · Get-NetAdapter و ...
+            ipconfig · netsh · Get-NetAdapter · ip addr · ss -tuln
           </p>
           <button
             onClick={() => setView('lab')}
@@ -220,9 +223,9 @@ export default function App() {
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl w-full">
             {[
-              { icon: '🪟', label: 'ویندوز اول', sub: 'ipconfig / netsh / PS' },
-              { icon: '⌨️', label: '۲۰۰+ دستور', sub: 'شبیه‌سازی‌شده' },
-              { icon: '🎯', label: 'کوئست تعاملی', sub: 'با هدف مشخص' },
+              { icon: '🪟', label: 'ویندوز', sub: 'ipconfig / netsh' },
+              { icon: '🐧', label: 'لینوکس', sub: 'ip / ss / nmcli' },
+              { icon: '⌨️', label: 'PowerShell', sub: 'Get-Net*' },
               { icon: '🏆', label: 'گیم‌فیکیشن', sub: 'XP و نشان' },
             ].map((item) => (
               <div key={item.label} className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4">
@@ -286,7 +289,7 @@ export default function App() {
               <div key={item.id} className="mb-1.5">
                 {item.type === 'input' && (
                   <div className="flex gap-2">
-                    <span className="text-sky-400 shrink-0">C:\\Users\\Student></span>
+                    <span className="text-sky-400 shrink-0">{PROMPT}</span>
                     <span className="text-zinc-100">{item.text}</span>
                   </div>
                 )}
@@ -304,7 +307,7 @@ export default function App() {
           </div>
 
           <form onSubmit={handleSubmit} className="shrink-0 border-t border-zinc-800 p-3 flex items-center gap-2 bg-[#0b0f17]">
-            <span className="text-sky-400 font-mono text-sm shrink-0">C:\\Users\\Student></span>
+            <span className="text-sky-400 font-mono text-sm shrink-0">{PROMPT}</span>
             <input
               ref={inputRef}
               value={input}
